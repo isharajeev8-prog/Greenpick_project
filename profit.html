@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenPick - Profit Estimation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* 🟢 Light Green Background */
+        body {
+            background-color: #e8f5e9; 
+            color: #263238;
+            line-height: 1.6;
+        }
+
+        /* 🟢 Dark Green Header */
+        header {
+            background-color: #1b5e20; 
+            color: white;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        /* 🟢 White Logo Text */
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            text-decoration: none;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        /* Header Link Underline Animation */
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #f1f8e9;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .container { 
+            max-width: 600px; 
+            background: white; 
+            margin: 40px auto; 
+            padding: 30px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+            border-top: 6px solid #2e7d32;
+        }
+
+        h2 { 
+            text-align: center; 
+            color: #1b5e20; 
+            margin-bottom: 25px;
+            font-size: 28px;
+        }
+
+        .form-group { 
+            margin-bottom: 20px; 
+        }
+
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 600; 
+            color: #37474f;
+        }
+
+        input, select { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid #b0bec5; 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-size: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #1b5e20;
+            box-shadow: 0 0 5px rgba(27, 94, 32, 0.2);
+        }
+
+        button { 
+            width: 100%; 
+            padding: 14px; 
+            background: #2e7d32; 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            font-weight: 600;
+            cursor: pointer; 
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover { 
+            background: #1b5e20; 
+            transform: translateY(-2px);
+        }
+
+        #result { 
+            margin-top: 25px; 
+            padding: 20px; 
+            background: #f1f8e9; 
+            border-left: 6px solid #2e7d32; 
+            border-radius: 8px;
+            font-size: 16px; 
+            display: none; 
+        }
+
+        #result p {
+            margin-bottom: 8px;
+            color: #37474f;
+        }
+
+        .profit-val { 
+            color: #2e7d32; 
+            font-weight: 700; 
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="homepg.html" class="logo">GreenPick</a>
+        <nav>
+            <a href="homepg.html">Home</a>
+            <a href="homepg.html#about">About Us</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>💰 Profit Estimation</h2>
+        <form id="profitForm">
+            <div class="form-group">
+                <label>Select Crop:</label>
+                <select id="crop" required>
+                    <option value="">-- Choose Crop --</option>
+                    <option value="rice">Rice</option>
+                    <option value="maize">Maize</option>
+                    <option value="coconut">Coconut</option>
+                    <option value="banana">Banana</option>
+                    <option value="kidneybeans">Kidneybeans</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Cultivation Area (in Acres):</label>
+                <input type="number" id="area" step="any" placeholder="Enter land area" required>
+            </div>
+            <div class="form-group">
+                <label>Total Production Cost (₹):</label>
+                <input type="number" id="cost" step="any" placeholder="Enter total cost" required>
+            </div>
+            
+            <button type="submit">Estimate Profit</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('profitForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const data = {
+                crop_name: document.getElementById('crop').value,
+                land_area: parseFloat(document.getElementById('area').value),
+                total_cost: parseFloat(document.getElementById('cost').value)
+            };
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<p>Calculating...</p>';
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/estimate-profit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <p><strong>Total Cost:</strong> ₹${result.total_cost}</p>
+                    <p><strong>Gross Revenue:</strong> ₹${result.total_revenue}</p>
+                    <p><strong>Net Profit:</strong> <span class="profit-val">₹${result.net_profit}</span></p>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<span style="color:#d32f2f; font-weight:600;">Error connecting to backend! Please make sure the server is running.</span>`;
+            }
+        });
+    </script>
+</body>
+</html>

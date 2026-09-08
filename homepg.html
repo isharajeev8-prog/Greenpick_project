@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenPick - Smart Agriculture System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* 🟢 Light Green Background */
+        body {
+            background-color: #e8f5e9; 
+            color: #263238;
+            line-height: 1.6;
+        }
+
+        /* 🟢 Dark Green Header */
+        header {
+            background-color: #1b5e20; 
+            color: white;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        /* 🟢 White Logo Text */
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        /* Header Link Underline Animation */
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #f1f8e9;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        /* 🌾 Smart Agriculture Description Card */
+        .about-section {
+            background: #ffffff;
+            padding: 45px 35px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-bottom: 50px;
+            border-left: 6px solid #2e7d32;
+        }
+
+        .about-section h1 {
+            color: #1b5e20;
+            margin-bottom: 10px;
+            font-size: 34px;
+            font-weight: 700;
+        }
+
+        /* 🎯 Subheading (Aim) */
+        .about-section .aim-subtitle {
+            color: #2e7d32;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* 📝 English Paragraph */
+        .about-section p {
+            color: #455a64;
+            font-size: 17px;
+            max-width: 850px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* 🔘 Buttons Grid */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* ⚡ Smooth Bounce Animation for Cards */
+        .nav-card {
+            background: #ffffff;
+            padding: 40px 25px;
+            border-radius: 16px;
+            text-decoration: none;
+            color: #37474f;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.04);
+            border-bottom: 5px solid #2e7d32;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 🖱️ Hover Effects */
+        .nav-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 15px 30px rgba(27, 94, 32, 0.2);
+            background-color: #f1f8e9; 
+            border-bottom-color: #1b5e20;
+        }
+
+        .nav-card .icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Icon Scale and Rotate on Hover */
+        .nav-card:hover .icon {
+            transform: scale(1.15) rotate(5px);
+        }
+
+        .nav-card h3 {
+            color: #1b5e20;
+            margin-bottom: 12px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .nav-card p {
+            font-size: 15px;
+            color: #546e7a;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🟢 Header Section -->
+    <header>
+        <div class="logo"> GreenPick</div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#about">About Us</a>
+        </nav>
+    </header>
+
+    <!-- 🌾 Main Content Body -->
+    <div class="container">
+        
+        <!-- About & Aim Section with English Text -->
+        <div class="about-section" id="about">
+            <h1>Smart Agriculture Recommendation System</h1>
+            <div class="aim-subtitle"> Aim & Vision</div>
+            <p>
+                <b>GreenPick</b> aims to simplify and modernize farming practices using advanced technology. 
+                By analyzing soil composition and environmental conditions, this system helps you find the most suitable crops for your farmland. 
+                Additionally, it provides precise fertilizer recommendations and evaluates cultivation costs to estimate net profits, empowering farmers to achieve maximum yield and sustainable revenue.
+            </p>
+        </div>
+
+        <!-- 🔘 Clickable Cards with Navigation Links -->
+        <div class="button-grid">
+            
+            <!-- 1. Crop Card -->
+            <a href="crop.html" class="nav-card">
+                <div class="icon">🌾</div>
+                <h3>Crop Recommendation</h3>
+                <p>Find the best suited crops for your soil health</p>
+            </a>
+
+            <!-- 2. Fertilizer Card -->
+            <a href="fertilizer.html" class="nav-card">
+                <div class="icon">🧪</div>
+                <h3>Fertilizer Recommendation</h3>
+                <p>Get accurate fertilizer guide for your crops</p>
+            </a>
+
+            <!-- 3. Profit Card -->
+            <a href="profit.html" class="nav-card">
+                <div class="icon">💰</div>
+                <h3>Profit Estimation</h3>
+                <p>Calculate your farming costs and expected profit</p>
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

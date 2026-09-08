@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenPick - Fertilizer Recommendation System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* 🟢 Light Green Background */
+        body {
+            background-color: #e8f5e9; 
+            color: #263238;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 🟢 Dark Green Header */
+        header {
+            background-color: #1b5e20; 
+            color: white;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        /* 🟢 White Logo Text */
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        /* Header Link Underline Animation */
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #f1f8e9;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Wrapper to Center the Form Below Header */
+        .page-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 500px;
+            border-top: 5px solid #2e7d32;
+        }
+
+        h2 {
+            text-align: center;
+            color: #1b5e20;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #34495e;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #2e7d32;
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #1b5e20;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .fertilizer-val {
+            color: #27ae60;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🟢 Header & Navigation Section -->
+    <header>
+        <div class="logo">GreenPick</div>
+        <nav>
+            <a href="homepg.html">Home</a>
+            <a href="homepg.html#about">About Us</a>
+        </nav>
+    </header>
+
+    <!-- 🧪 Form Content Section -->
+    <div class="page-wrapper">
+        <div class="container">
+            <h2>Fertilizer Predictor</h2>
+            <form id="predictionForm">
+                <div class="form-group">
+                    <label for="temperature">Temperature (°C):</label>
+                    <input type="number" step="0.1" id="temperature" name="Temperature" placeholder="e.g. 26.5" required>
+                </div>
+                <div class="form-group">
+                    <label for="moisture">Soil Moisture:</label>
+                    <input type="number" step="0.1" id="moisture" name="Moisture" placeholder="e.g. 45.0" required>
+                </div>
+                <div class="form-group">
+                    <label for="soil">Soil Type:</label>
+                    <select id="soil" name="Soil_Type" required>
+                        <option value="Sandy">Sandy</option>
+                        <option value="Loamy">Loamy</option>
+                        <option value="Black">Black</option>
+                        <option value="Red">Red</option>
+                        <option value="Clayey">Clayey</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="crop">Crop Type:</label>
+                    <select id="crop" name="Crop_Type" required>
+                        <option value="Rice">Rice</option>
+                        <option value="Maize">Maize</option>
+                        <option value="Sugarcane">Sugarcane</option>
+                        <option value="Cotton">Cotton</option>
+                        <option value="Wheat">Wheat</option>
+                    </select>
+                </div>
+                
+                <button type="submit">Predict Fertilizer</button>
+            </form>
+
+            <div id="result"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'success'; 
+            resultDiv.innerHTML = 'Predicting...';
+
+            try {
+                const formData = {
+                    soil_type: document.getElementById('soil').value,      
+                    crop_type: document.getElementById('crop').value,      
+                    temperature: parseFloat(document.getElementById('temperature').value), 
+                    moisture: parseFloat(document.getElementById('moisture').value)
+                };
+
+                const response = await fetch("http://127.0.0.1:8000/predict-fertilizer-db", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.className = 'success';
+                    
+                    if (result.recommended_fertilizer) {
+                        resultDiv.innerHTML = `
+                            <p><strong>Recommended Fertilizer:</strong> <br>
+                                <span class="fertilizer-val">${result.recommended_fertilizer}</span>
+                            </p>
+                        `;
+                    } else {
+                        resultDiv.innerText = "Prediction output key mismatch in Python response!";
+                    }
+                } else {
+                    resultDiv.className = 'error';
+                    resultDiv.innerText = "Error: " + (result.detail || "Prediction failed!");
+                }
+
+            } catch (error) {
+                console.error("Error connecting to server:", error);
+                resultDiv.className = 'error';
+                resultDiv.innerText = "Cannot connect to Python server. Make sure main.py is running!";
+            }
+        }); 
+    </script>
+
+</body>
+</html>
