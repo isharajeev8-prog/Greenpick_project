@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logout - Smart Agriculture</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    }
+    .card {
+      background: #fff;
+      width: 100%;
+      max-width: 400px;
+      padding: 40px 32px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      text-align: center;
+    }
+    .icon { font-size: 48px; margin-bottom: 12px; }
+    h1 { color: #2e7d32; font-size: 24px; margin-bottom: 8px; }
+    p { color: #555; margin-bottom: 24px; line-height: 1.5; }
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+      margin-bottom: 10px;
+    }
+    .btn-danger { background: #c62828; color: #fff; }
+    .btn-danger:hover { background: #b71c1c; }
+    .btn-primary { background: #2e7d32; color: #fff; }
+    .btn-primary:hover { background: #1b5e20; }
+    .btn-link { background: #f1f1f1; color: #333; }
+    .btn-link:hover { background: #e2e2e2; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .hidden { display: none; }
+    .error { color: #c62828; font-size: 14px; margin-bottom: 14px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <!-- Step 1: confirm -->
+    <div id="confirmView">
+      <div class="icon">🌾</div>
+      <h1>Log out?</h1>
+      <p id="whoText">You will need to sign in again to see your prediction history.</p>
+      <div id="errorMsg" class="error hidden"></div>
+      <button id="logoutBtn" class="btn btn-danger">Yes, log me out</button>
+      <a href="homepg2.html" class="btn btn-link">Cancel</a>
+    </div>
+
+    <!-- Step 2: done -->
+    <div id="doneView" class="hidden">
+      <div class="icon">✅</div>
+      <h1>Logged out</h1>
+      <p>You have been logged out successfully. Redirecting to login...</p>
+      <a href="homepg.html" class="btn btn-primary">Go to Login</a>
+    </div>
+  </div>
+
+  <script>
+    const TOKEN_KEY = "greenpick_token";
+    const USER_KEY = "greenpick_name";
+
+    const confirmView = document.getElementById("confirmView");
+    const doneView = document.getElementById("doneView");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const errorMsg = document.getElementById("errorMsg");
+    const whoText = document.getElementById("whoText");
+
+    function clearSession() {
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(USER_KEY);
+    }
+
+    function showDone() {
+      confirmView.classList.add("hidden");
+      doneView.classList.remove("hidden");
+      setTimeout(() => { window.location.href = "homepg.html"; }, 1500);
+    }
+
+    // Greet the user by name if the login page saved it (stored as plain text)
+    const savedName = localStorage.getItem(USER_KEY);
+    if (savedName) {
+      whoText.textContent = savedName + ", you will need to sign in again to see your prediction history.";
+    }
+
+    // Not logged in at all? Nothing to log out of.
+    if (!localStorage.getItem(TOKEN_KEY)) {
+      window.location.href = "homepg.html";
+    }
+
+    logoutBtn.addEventListener("click", async () => {
+      errorMsg.classList.add("hidden");
+      logoutBtn.disabled = true;
+      logoutBtn.textContent = "Logging out...";
+
+      const token = localStorage.getItem(TOKEN_KEY);
+
+      try {
+        const res = await fetch('http://127.0.0.1:8000/logout', {
+          method: "POST",
+          headers: { "Authorization": "Bearer " + token }
+        });
+
+        // 200 = token deleted from MySQL. 401 = token was already invalid/expired,
+        // which still means the user is effectively logged out.
+        if (res.ok || res.status === 401) {
+          clearSession();
+          showDone();
+        } else {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.detail || "Logout failed");
+        }
+      } catch (err) {
+        errorMsg.textContent = err.message || "Could not reach the server. Please try again.";
+        errorMsg.classList.remove("hidden");
+        logoutBtn.disabled = false;
+        logoutBtn.textContent = "Yes, log me out";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -3,110 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Agriculture - Crop Recommendation</title>
+    <title>Crop Recommendation - GreenPick</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        :root {
+            --forest: #14361f;
+            --moss: #2f6b3a;
+            --leaf: #4c9a4f;
+            --lime: #b7e36a;
+            --sage: #d0e7c0;
+            --mist: #e8f4dc;
+            --line: #b6d9a6;
+            --ink: #163d22;
+            --muted: #2a6238;
+            --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+            --font-body: 'Nunito Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        body { 
-            background-color: #e8f5e9; 
-            color: #263238;
-            margin: 0; 
-            padding-bottom: 40px;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-body); }
+
+        /* Light Green Background */
+        body {
+            background-color: var(--sage);
+            background-image:
+                radial-gradient(circle at 10% 6%, rgba(150, 214, 90, 0.45), transparent 40%),
+                radial-gradient(circle at 94% 60%, rgba(76, 154, 79, 0.28), transparent 45%);
+            background-attachment: fixed;
+            color: var(--ink);
+            line-height: 1.6;
+            min-height: 100vh;
         }
 
-        /* 🟢 Dark Green Header */
+        /* Fresh Green Header with leaf pattern */
         header {
-            background-color: #1b5e20; 
-            color: white;
+            background-color: #8fcd74;
+            background-image:
+                radial-gradient(circle at 6% 0%, rgba(255, 255, 255, 0.45), transparent 40%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%232f6b3a' stroke-opacity='0.16' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 44 C20 24 34 12 52 10 C54 28 44 42 20 44Z'/%3E%3Cpath d='M22 42 L46 18'/%3E%3Cpath d='M84 108 C84 88 98 76 116 74 C118 92 108 106 84 108Z'/%3E%3Cpath d='M86 106 L110 82'/%3E%3C/g%3E%3C/svg%3E"),
+                linear-gradient(90deg, #aadf8c 0%, #78c060 100%);
+            background-size: auto, 120px 120px, auto;
+            color: var(--forest);
             padding: 20px 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 4px solid var(--moss);
+            box-shadow: 0 6px 18px rgba(20, 54, 31, 0.2);
+        }
+
+        .header-left {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            margin-bottom: 30px;
+            gap: 15px;
         }
 
-        /* 🟢 White Logo Text */
-        .logo {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: #ffffff;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        }
-
-        nav a {
-            color: #ffffff;
+        /* Back Arrow Styling */
+        .back-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border: 1px solid var(--moss);
+            border-radius: 50%;
+            color: var(--forest);
             text-decoration: none;
-            margin-left: 25px;
-            font-weight: 600;
-            font-size: 16px;
+            font-size: 20px;
+            font-weight: bold;
             transition: all 0.3s ease;
-            position: relative;
         }
 
-        /* Header Link Underline Animation */
+        .back-btn:hover {
+            background-color: #ffffff;
+            color: var(--moss);
+            transform: translateX(-3px);
+            box-shadow: 0 4px 10px rgba(20, 54, 31, 0.15);
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 28px; font-weight: 700; letter-spacing: 0.3px;
+            color: var(--forest);
+        }
+        nav a {
+            color: var(--forest); text-decoration: none; margin-left: 25px; font-weight: 600;
+            font-size: 16px; transition: color 0.3s ease; position: relative;
+        }
+        nav a:hover { color: var(--moss); }
         nav a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0;
+            background-color: var(--moss); transition: width 0.3s ease;
+        }
+        nav a:hover::after { width: 100%; }
+
+        a:focus-visible {
+            outline: 3px solid var(--moss);
+            outline-offset: 4px;
+            border-radius: 6px;
+        }
+
+        .container { max-width: 560px; margin: 50px auto; padding: 0 20px; }
+
+        /* Form card, same treatment as the about-section card on the homepage */
+        .form-card {
+            background-color: #bfe0a8;
+            background-image:
+                radial-gradient(circle at 92% 6%, rgba(255, 255, 255, 0.6), transparent 36%),
+                radial-gradient(circle at 55% 105%, rgba(76, 154, 79, 0.22), transparent 46%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%232f6b3a' stroke-opacity='0.13' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 44 C20 24 34 12 52 10 C54 28 44 42 20 44Z'/%3E%3Cpath d='M22 42 L46 18'/%3E%3Cpath d='M84 108 C84 88 98 76 116 74 C118 92 108 106 84 108Z'/%3E%3Cpath d='M86 106 L110 82'/%3E%3C/g%3E%3C/svg%3E"),
+                linear-gradient(135deg, #cdeab8 0%, #a9d891 100%);
+            background-size: auto, auto, 120px 120px, auto;
+            border: 1px solid #93c67d;
+            padding: 44px 38px 38px;
+            border-radius: 28px;
+            box-shadow: 0 22px 50px rgba(20, 54, 31, 0.14);
+            overflow: hidden;
+        }
+
+        .form-card h2 {
+            font-family: var(--font-display);
+            color: var(--forest);
+            text-align: center;
+            margin-bottom: 28px;
+            font-size: 30px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        /* short green bar under the heading */
+        .form-card h2::after {
             content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: #f1f8e9;
-            transition: width 0.3s ease;
+            display: block;
+            width: 56px;
+            height: 3px;
+            margin: 14px auto 0;
+            background: var(--leaf);
+            border-radius: 3px;
         }
 
-        nav a:hover::after {
-            width: 100%;
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 700; color: var(--forest); font-size: 14px; }
+        .form-group label .hint { font-weight: 400; color: var(--muted); font-size: 12px; }
+        .form-group input {
+            width: 100%; padding: 12px 14px; border: 1px solid #93c67d; border-radius: 12px;
+            background: rgba(255, 255, 255, 0.75); font-size: 15px; font-family: inherit; color: var(--ink); outline: none;
+            transition: all 0.3s ease;
+        }
+        .form-group input:focus {
+            border-color: var(--moss); background: #ffffff; box-shadow: 0 0 0 3px rgba(76, 154, 79, 0.28);
         }
 
-        .container { max-width: 500px; background: white; margin: auto; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #2c3e50; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background: #2ecc71; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
-        button:hover { background: #27ae60; }
-        #result { margin-top: 20px; padding: 15px; background: #e8f8f5; border-left: 5px solid #2ecc71; font-size: 18px; text-align: center; display: none; }
+        button {
+            width: 100%; padding: 14px;
+            background: linear-gradient(160deg, #3a7d45 0%, #1f5a2e 100%);
+            color: white; border: none;
+            border-bottom: 5px solid var(--forest); border-radius: 12px; font-size: 16px; font-weight: 700;
+            cursor: pointer; box-shadow: 0 10px 20px rgba(20, 54, 31, 0.22);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin-top: 6px;
+        }
+        button:hover {
+            transform: translateY(-4px); box-shadow: 0 16px 28px rgba(20, 54, 31, 0.35);
+            background: linear-gradient(160deg, #47924f 0%, #2a6f3a 100%);
+        }
+        button:focus-visible {
+            outline: 3px solid var(--lime);
+            outline-offset: 3px;
+        }
+
+        #result {
+            margin-top: 22px; padding: 18px 20px;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid #93c67d;
+            border-left: 6px solid var(--leaf);
+            font-size: 17px; text-align: center; border-radius: 14px; display: none;
+            color: var(--ink);
+        }
+        #result.error {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid #e0b0a6;
+            border-left-color: #c0503f;
+            color: #8a2c1c;
+        }
+        .save-note { display: block; margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--muted); }
+
+        @media (max-width: 600px) {
+            header { padding: 15px 20px; }
+            .container { margin: 32px auto; }
+            .form-card { padding: 36px 22px 30px; }
+            .form-card h2 { font-size: 25px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; animation: none !important; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- 🟢 Header Section Added Here -->
     <header>
-        <div class="logo">GreenPick</div>
+        <div class="header-left">
+            <a href="javascript:history.back()" class="back-btn" title="Go Back">&#8592;</a>
+            <div class="logo">GreenPick</div>
+        </div>
         <nav>
-            <a href="homepg.html">Home</a>
-            <a href="homepg.html#about">About Us</a>
+            <a href="homepg2.html">Home</a>
+            <a href="homepg2.html#about">About Us</a>
         </nav>
     </header>
 
     <div class="container">
-        <h2>🌾 Crop Recommendation</h2>
-        <form id="cropForm">
-            <div class="form-group"><label>Nitrogen (N):</label><input type="number" id="n" step="any" required></div>
-            <div class="form-group"><label>Phosphorus (P):</label><input type="number" id="p" step="any" required></div>
-            <div class="form-group"><label>Potassium (K):</label><input type="number" id="k" step="any" required></div>
-            <div class="form-group"><label>Temperature (°C):</label><input type="number" id="temp" step="any" required></div>
-            <div class="form-group"><label>Humidity (%):</label><input type="number" id="humidity" step="any" required></div>
-            <div class="form-group"><label>pH Level:</label><input type="number" id="ph" step="any" required></div>
-            <div class="form-group"><label>Rainfall (mm):</label><input type="number" id="rainfall" step="any" required></div>
-            <button type="submit">Predict Crop</button>
-        </form>
+        <div class="form-card">
+            <h2> Crop Recommendation</h2>
+            <form id="cropForm">
+                <div class="form-group">
+                    <label for="n">Nitrogen (N) <span class="hint">0–140</span></label>
+                    <input type="number" id="n" step="any" min="0" max="140" required>
+                </div>
+                <div class="form-group">
+                    <label for="p">Phosphorus (P) <span class="hint">0–145</span></label>
+                    <input type="number" id="p" step="any" min="0" max="145" required>
+                </div>
+                <div class="form-group">
+                    <label for="k">Potassium (K) <span class="hint">0–205</span></label>
+                    <input type="number" id="k" step="any" min="0" max="205" required>
+                </div>
+                <div class="form-group">
+                    <label for="temp">Temperature (°C) <span class="hint">0–44</span></label>
+                    <input type="number" id="temp" step="any" min="0" max="44" required>
+                </div>
+                <div class="form-group">
+                    <label for="humidity">Humidity (%) <span class="hint">0–100</span></label>
+                    <input type="number" id="humidity" step="any" min="0" max="100" required>
+                </div>
+                <div class="form-group">
+                    <label for="ph">pH Level <span class="hint">1–14</span></label>
+                    <input type="number" id="ph" step="any" min="1" max="14" required>
+                </div>
+                <div class="form-group">
+                    <label for="rainfall">Rainfall (mm) <span class="hint">0–300</span></label>
+                    <input type="number" id="rainfall" step="any" min="0" max="300" required>
+                </div>
+                <button type="submit">Predict Crop</button>
+            </form>
 
-        <div id="result"></div>
+            <div id="result"></div>
+        </div>
     </div>
 
     <script>
+        const FIELD_LIMITS = {
+            n: { min: 0, max: 140, label: 'Nitrogen (N)' },
+            p: { min: 0, max: 145, label: 'Phosphorus (P)' },
+            k: { min: 0, max: 205, label: 'Potassium (K)' },
+            temp: { min: 0, max: 44, label: 'Temperature' },
+            humidity: { min: 0, max: 100, label: 'Humidity' },
+            ph: { min: 1, max: 14, label: 'pH Level' },
+            rainfall: { min: 0, max: 300, label: 'Rainfall' }
+        };
+
+        // Login token saved by login.html. Sent with every prediction so the
+        // server can store the result in the user's history.
+        function authHeaders() {
+            const headers = { 'Content-Type': 'application/json' };
+            const token = localStorage.getItem('greenpick_token');
+            if (token) headers['Authorization'] = 'Bearer ' + token;
+            return headers;
+        }
+
         document.getElementById('cropForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
+            const resultDiv = document.getElementById('result');
+
+            for (const [id, { min, max, label }] of Object.entries(FIELD_LIMITS)) {
+                const value = parseFloat(document.getElementById(id).value);
+                if (Number.isNaN(value) || value < min || value > max) {
+                    resultDiv.className = 'error';
+                    resultDiv.style.display = 'block';
+                    resultDiv.innerHTML = `${label} must be between ${min} and ${max}.`;
+                    return;
+                }
+            }
+
             const data = {
                 nitrogen: parseFloat(document.getElementById('n').value),
                 phosphorus: parseFloat(document.getElementById('p').value),
@@ -117,21 +296,32 @@
                 rainfall: parseFloat(document.getElementById('rainfall').value)
             };
 
-            const resultDiv = document.getElementById('result');
+            resultDiv.className = '';
             resultDiv.style.display = 'block';
             resultDiv.innerText = 'Predicting...';
 
             try {
                 const response = await fetch('http://127.0.0.1:8000/predict', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: authHeaders(),
                     body: JSON.stringify(data)
                 });
 
+                if (!response.ok) {
+                    const err = await response.json().catch(() => ({}));
+                    throw new Error(err.detail || `Request failed (${response.status})`);
+                }
+
                 const result = await response.json();
-                resultDiv.innerHTML = `<strong>Recommended Crop:</strong> ${result.recommended_crop || result.prediction}`;
+                const note = localStorage.getItem('greenpick_token')
+                    ? 'Saved to your history.'
+                    : 'Log in to save predictions to your history.';
+                resultDiv.innerHTML =
+                    `<strong>Recommended Crop:</strong> ${result.recommended_crop}` +
+                    `<span class="save-note">${note}</span>`;
             } catch (error) {
-                resultDiv.innerHTML = `<span style="color:red;">Error connecting to backend!</span>`;
+                resultDiv.className = 'error';
+                resultDiv.innerHTML = `Error: ${error.message}`;
             }
         });
     </script>

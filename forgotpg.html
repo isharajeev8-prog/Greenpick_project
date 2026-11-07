@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password - GreenPick</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --forest: #14361f;
+            --moss: #2f6b3a;
+            --leaf: #4c9a4f;
+            --lime: #b7e36a;
+            --sage: #d0e7c0;
+            --mist: #e8f4dc;
+            --line: #b6d9a6;
+            --ink: #163d22;
+            --muted: #2a6238;
+            --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+            --font-body: 'Nunito Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-body);
+        }
+
+        /* Light Green Background */
+        body {
+            background-color: var(--sage);
+            background-image:
+                radial-gradient(circle at 10% 6%, rgba(150, 214, 90, 0.45), transparent 40%),
+                radial-gradient(circle at 94% 60%, rgba(76, 154, 79, 0.28), transparent 45%);
+            background-attachment: fixed;
+            color: var(--ink);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Fresh Green Header with leaf pattern */
+        header {
+            background-color: #8fcd74;
+            background-image:
+                radial-gradient(circle at 6% 0%, rgba(255, 255, 255, 0.45), transparent 40%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%232f6b3a' stroke-opacity='0.16' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 44 C20 24 34 12 52 10 C54 28 44 42 20 44Z'/%3E%3Cpath d='M22 42 L46 18'/%3E%3Cpath d='M84 108 C84 88 98 76 116 74 C118 92 108 106 84 108Z'/%3E%3Cpath d='M86 106 L110 82'/%3E%3C/g%3E%3C/svg%3E"),
+                linear-gradient(90deg, #aadf8c 0%, #78c060 100%);
+            background-size: auto, 120px 120px, auto;
+            color: var(--forest);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--moss);
+            box-shadow: 0 6px 18px rgba(20, 54, 31, 0.2);
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: var(--forest);
+        }
+
+        nav a {
+            color: var(--forest);
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--moss);
+        }
+
+        a:focus-visible {
+            outline: 3px solid var(--moss);
+            outline-offset: 4px;
+            border-radius: 6px;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        /* Card, same treatment as the about-section card on the homepage */
+        .login-section {
+            background-color: #bfe0a8;
+            background-image:
+                radial-gradient(circle at 92% 6%, rgba(255, 255, 255, 0.6), transparent 36%),
+                radial-gradient(circle at 55% 105%, rgba(76, 154, 79, 0.22), transparent 46%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%232f6b3a' stroke-opacity='0.13' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 44 C20 24 34 12 52 10 C54 28 44 42 20 44Z'/%3E%3Cpath d='M22 42 L46 18'/%3E%3Cpath d='M84 108 C84 88 98 76 116 74 C118 92 108 106 84 108Z'/%3E%3Cpath d='M86 106 L110 82'/%3E%3C/g%3E%3C/svg%3E"),
+                linear-gradient(135deg, #cdeab8 0%, #a9d891 100%);
+            background-size: auto, auto, 120px 120px, auto;
+            border: 1px solid #93c67d;
+            padding: 48px 38px 42px;
+            border-radius: 28px;
+            box-shadow: 0 22px 50px rgba(20, 54, 31, 0.14);
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .login-section h1 {
+            font-family: var(--font-display);
+            color: var(--forest);
+            font-size: 32px;
+            font-weight: 600;
+            line-height: 1.15;
+            text-align: center;
+        }
+
+        /* short green bar under the heading */
+        .login-section h1::after {
+            content: '';
+            display: block;
+            width: 56px;
+            height: 3px;
+            margin: 16px auto 16px;
+            background: var(--leaf);
+            border-radius: 3px;
+        }
+
+        .login-section .aim-subtitle {
+            font-family: var(--font-display);
+            color: var(--moss);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--forest);
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px 16px;
+            font-size: 15px;
+            font-family: inherit;
+            color: var(--ink);
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid #93c67d;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: var(--moss);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(76, 154, 79, 0.28);
+        }
+
+        .form-group input::placeholder {
+            color: #6f9578;
+        }
+
+        .form-group .hint {
+            display: block;
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        button.login-btn {
+            margin-top: 10px;
+            padding: 14px;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            background: linear-gradient(160deg, #3a7d45 0%, #1f5a2e 100%);
+            border: none;
+            border-bottom: 5px solid var(--forest);
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(20, 54, 31, 0.22);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        button.login-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 28px rgba(20, 54, 31, 0.35);
+            background: linear-gradient(160deg, #47924f 0%, #2a6f3a 100%);
+        }
+
+        button.login-btn:focus-visible {
+            outline: 3px solid var(--lime);
+            outline-offset: 3px;
+        }
+
+        button.login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .signup-note {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 14.5px;
+            color: var(--muted);
+        }
+
+        .signup-note a {
+            color: var(--forest);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .signup-note a:hover {
+            text-decoration: underline;
+        }
+
+        #formError,
+        #resetError {
+            display: none;
+            margin-top: -8px;
+            margin-bottom: 4px;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #8a2c1c;
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid #e0b0a6;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        #formSuccess {
+            display: none;
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--forest);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #93c67d;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .hidden { display: none; }
+
+        @media (max-width: 600px) {
+            header { padding: 15px 20px; }
+            .container { margin: 32px auto; }
+            .login-section { padding: 38px 24px 34px; }
+            .login-section h1 { font-size: 26px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo"> GreenPick</div>
+        <nav>
+            <a href="homepg.html">Home</a>
+            <a href="login.html">Login</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="login-section">
+
+            <!-- Step 1: enter and verify email -->
+            <div id="emailStep">
+                <h1>Forgot Password</h1>
+                <div class="aim-subtitle">Enter your account email to continue</div>
+
+                <p id="formError"></p>
+
+                <form id="emailForm">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="you@example.com" required autofocus>
+                    </div>
+                    <button type="submit" class="login-btn" id="emailBtn">Continue</button>
+                </form>
+
+                <p class="signup-note">Remembered it? <a href="loginpg.html">Back to Sign In</a></p>
+            </div>
+
+            <!-- Step 2: shown only after the email is confirmed -->
+            <div id="passwordStep" class="hidden">
+                <h1>Set a New Password</h1>
+                <div class="aim-subtitle" id="resetForEmail"></div>
+
+                <p id="resetError" style="display:none; margin-top:-8px; margin-bottom:4px; font-size:13px; color:#a6402f; text-align:center;"></p>
+
+                <form id="resetForm">
+                    <div class="form-group">
+                        <label for="newPassword">New password</label>
+                        <input type="password" id="newPassword" placeholder="••••••••" required minlength="6">
+                        <span class="hint">At least 6 characters</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm new password</label>
+                        <input type="password" id="confirmPassword" placeholder="••••••••" required minlength="6">
+                    </div>
+                    <button type="submit" class="login-btn" id="resetBtn">Reset Password</button>
+                </form>
+            </div>
+
+            <!-- Step 3: success -->
+            <div id="doneStep" class="hidden">
+                <h1>Password Reset</h1>
+                <p id="formSuccess" style="display:block;">Your password has been changed. Please log in with it.</p>
+                <a href="loginpg.html" class="login-btn" style="display:block; text-align:center; text-decoration:none;">Go to Login</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const API = 'http://127.0.0.1:8000';
+
+        const emailStep = document.getElementById('emailStep');
+        const passwordStep = document.getElementById('passwordStep');
+        const doneStep = document.getElementById('doneStep');
+
+        const emailForm = document.getElementById('emailForm');
+        const emailBtn = document.getElementById('emailBtn');
+        const formError = document.getElementById('formError');
+
+        const resetForm = document.getElementById('resetForm');
+        const resetBtn = document.getElementById('resetBtn');
+        const resetError = document.getElementById('resetError');
+        const resetForEmail = document.getElementById('resetForEmail');
+
+        let verifiedEmail = '';
+
+        // Step 1: confirm the email exists before letting them set a password.
+        emailForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            formError.style.display = 'none';
+            emailBtn.disabled = true;
+            emailBtn.textContent = 'Checking...';
+
+            const email = document.getElementById('email').value.trim();
+
+            try {
+                const res = await fetch(`${API}/check-email`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                const result = await res.json().catch(() => ({}));
+
+                if (!res.ok) {
+                    throw new Error(result.detail || 'No account found with that email.');
+                }
+
+                verifiedEmail = email;
+                resetForEmail.textContent = `for ${email}`;
+                emailStep.classList.add('hidden');
+                passwordStep.classList.remove('hidden');
+            } catch (err) {
+                formError.textContent = (err instanceof TypeError)
+                    ? 'Could not reach the server. Make sure it is running.'
+                    : err.message;
+                formError.style.display = 'block';
+            } finally {
+                emailBtn.disabled = false;
+                emailBtn.textContent = 'Continue';
+            }
+        });
+
+        // Step 2: set the new password for the verified email.
+        resetForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            resetError.style.display = 'none';
+
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                resetError.textContent = 'Passwords do not match.';
+                resetError.style.display = 'block';
+                return;
+            }
+
+            resetBtn.disabled = true;
+            resetBtn.textContent = 'Resetting...';
+
+            try {
+                const res = await fetch(`${API}/reset-password`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: verifiedEmail, new_password: newPassword })
+                });
+                const result = await res.json().catch(() => ({}));
+
+                if (!res.ok) {
+                    throw new Error(result.detail || 'Could not reset the password.');
+                }
+
+                passwordStep.classList.add('hidden');
+                doneStep.classList.remove('hidden');
+            } catch (err) {
+                resetError.textContent = (err instanceof TypeError)
+                    ? 'Could not reach the server. Make sure it is running.'
+                    : err.message;
+                resetError.style.display = 'block';
+            } finally {
+                resetBtn.disabled = false;
+                resetBtn.textContent = 'Reset Password';
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History - GreenPick</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #e8f5e9; color: #263238; line-height: 1.6; min-height: 100vh; }
+
+        header {
+            background-color: #1b5e20; color: white; padding: 20px 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .logo { font-size: 28px; font-weight: 800; letter-spacing: 1px; color: #fff; text-decoration: none; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        nav a {
+            color: #fff; text-decoration: none; margin-left: 25px; font-weight: 600;
+            font-size: 16px; position: relative;
+        }
+        nav a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0;
+            background-color: #f1f8e9; transition: width 0.3s ease;
+        }
+        nav a:hover::after { width: 100%; }
+
+        .container {
+            max-width: 1000px; margin: 40px auto; padding: 30px; background: #fff;
+            border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-top: 6px solid #2e7d32;
+        }
+        h2 { color: #1b5e20; text-align: center; margin-bottom: 8px; font-size: 28px; }
+        .subtitle { text-align: center; color: #558b2f; margin-bottom: 24px; }
+
+        .filters { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .filters button {
+            padding: 8px 16px; border: 1px solid #2e7d32; background: #fff; color: #2e7d32;
+            border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;
+        }
+        .filters button.active, .filters button:hover { background: #2e7d32; color: #fff; }
+
+        /* Combined Actions Toolbar */
+        .action-toolbar {
+            background: #f1f8e9; padding: 12px 18px; border-radius: 10px; margin-bottom: 20px;
+            border: 1px solid #c8e6c9; display: flex; flex-direction: column; gap: 8px;
+        }
+        .toolbar-row {
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;
+        }
+        .email-group { display: flex; gap: 8px; align-items: center; flex: 1; max-width: 600px; }
+        .email-group input {
+            flex: 1; padding: 8px 12px; border: 1px solid #a5d6a7; border-radius: 6px; font-size: 14px; outline: none;
+        }
+        .email-group input:focus { border-color: #2e7d32; box-shadow: 0 0 0 2px rgba(46,125,50,0.2); }
+        
+        .btn-email-all {
+            background: #2e7d32; color: white; border: none; padding: 8px 14px; border-radius: 6px;
+            font-weight: 600; cursor: pointer; transition: background 0.2s ease; white-space: nowrap; font-size: 13px;
+        }
+        .btn-email-all:hover { background: #1b5e20; }
+        
+        .btn-clear-all {
+            background: #fdecea; color: #c62828; border: 1px solid #ef9a9a; padding: 8px 14px; border-radius: 6px;
+            font-weight: 600; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; font-size: 13px;
+        }
+        .btn-clear-all:hover { background: #c62828; color: white; }
+
+        .email-status { width: 100%; font-size: 13px; font-weight: 600; display: none; }
+        .email-status.success { color: #2e7d32; }
+        .email-status.error { color: #c62828; }
+
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #e0e0e0; font-size: 14px; vertical-align: top; }
+        th { background: #f1f8e9; color: #1b5e20; font-weight: 700; }
+        tr:hover td { background: #fafff9; }
+
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+        .badge.crop_prediction { background: #c8e6c9; color: #1b5e20; }
+        .badge.fertilizer_prediction { background: #fff9c4; color: #827717; }
+        .badge.profit_estimate { background: #bbdefb; color: #0d47a1; }
+
+        .action-btns { display: flex; gap: 6px; }
+        .email-btn {
+            background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; padding: 6px 10px;
+            border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; transition: all 0.2s;
+        }
+        .email-btn:hover { background: #2e7d32; color: #fff; }
+        .del-btn {
+            background: #fdecea; color: #c62828; border: none; padding: 6px 12px;
+            border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; transition: all 0.2s;
+        }
+        .del-btn:hover { background: #c62828; color: #fff; }
+
+        .msg { text-align: center; padding: 30px; color: #607d8b; }
+        .msg.error { color: #c62828; }
+        .small { color: #607d8b; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="homepg2.html" class="logo">🌱 GreenPick</a>
+        <nav>
+            <a href="homepg2.html">Home</a>
+            <a href="crop.html">Crop</a>
+            <a href="fertilizer.html">Fertilizer</a>
+            <a href="profit.html">Profit</a>
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>📜 Prediction History</h2>
+        <p class="subtitle" id="subtitle"></p>
+
+        <div class="filters">
+            <button class="active" data-filter="all">All</button>
+            <button data-filter="crop_prediction">Crop</button>
+            <button data-filter="fertilizer_prediction">Fertilizer</button>
+            <button data-filter="profit_estimate">Profit</button>
+        </div>
+
+        <!-- Action Toolbar with Email and Clear Options Side-by-Side -->
+        <div class="action-toolbar">
+            <div class="toolbar-row">
+                <div class="email-group">
+                    <input type="email" id="userEmailInput" placeholder="Enter recipient email..." />
+                    <button class="btn-email-all" onclick="emailHistoryRecord(null)"> Email All History</button>
+                </div>
+                <button class="btn-clear-all" onclick="clearAllHistory()"> Clear History</button>
+            </div>
+            <div id="emailStatus" class="email-status"></div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Type</th>
+                        <th>Input</th>
+                        <th>Result</th>
+                        <th>Date &amp; Time</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody"></tbody>
+            </table>
+        </div>
+        <div id="message" class="msg">Loading...</div>
+    </div>
+
+    <script>
+        const API = 'http://127.0.0.1:8000';
+        const token = localStorage.getItem('greenpick_token');
+
+        if (!token) {
+            window.location.href = '/login?next=history.html';
+        }
+
+        const TYPE_LABELS = {
+            crop_prediction: 'Crop',
+            fertilizer_prediction: 'Fertilizer',
+            profit_estimate: 'Profit'
+        };
+
+        const FIELD_LABELS = {
+            nitrogen: 'N', phosphorus: 'P', potassium: 'K', temperature: 'Temp',
+            humidity: 'Humidity', ph: 'pH', rainfall: 'Rainfall', moisture: 'Moisture',
+            soil_type: 'Soil', crop_type: 'Crop', crop_name: 'Crop', land_area: 'Area (acres)',
+            total_cost: 'Cost'
+        };
+
+        let allRecords = [];
+        let currentFilter = 'all';
+
+        function formatInput(input) {
+            if (!input) return '-';
+            return Object.entries(input)
+                .map(([k, v]) => `${FIELD_LABELS[k] || k}: ${v}`)
+                .join(', ');
+        }
+
+        function formatResult(type, result) {
+            if (!result) return '-';
+            if (type === 'crop_prediction') return result.recommended_crop || '-';
+            if (type === 'fertilizer_prediction') return result.recommended_fertilizer || '-';
+            if (type === 'profit_estimate') {
+                return `Cost ₹${result.total_cost}, Revenue ₹${result.total_revenue}, Net Profit ₹${result.net_profit}`;
+            }
+            return JSON.stringify(result);
+        }
+
+        function makeCell(text, className) {
+            const td = document.createElement('td');
+            td.textContent = text;
+            if (className) td.className = className;
+            return td;
+        }
+
+        function render() {
+            const body = document.getElementById('historyBody');
+            const message = document.getElementById('message');
+            body.innerHTML = '';
+
+            const records = currentFilter === 'all'
+                ? allRecords
+                : allRecords.filter(r => r.action_type === currentFilter);
+
+            document.getElementById('subtitle').textContent =
+                `${records.length} record${records.length === 1 ? '' : 's'}`;
+
+            if (records.length === 0) {
+                message.className = 'msg';
+                message.style.display = 'block';
+                message.textContent = 'No history yet. Make a prediction and it will appear here.';
+                return;
+            }
+            message.style.display = 'none';
+
+            records.forEach((r, i) => {
+                const tr = document.createElement('tr');
+
+                tr.appendChild(makeCell(i + 1));
+
+                const typeTd = document.createElement('td');
+                const badge = document.createElement('span');
+                badge.className = 'badge ' + r.action_type;
+                badge.textContent = TYPE_LABELS[r.action_type] || r.action_type;
+                typeTd.appendChild(badge);
+                tr.appendChild(typeTd);
+
+                tr.appendChild(makeCell(formatInput(r.input_data), 'small'));
+                tr.appendChild(makeCell(formatResult(r.action_type, r.result_data)));
+                tr.appendChild(makeCell(new Date(r.timestamp).toLocaleString(), 'small'));
+
+                const actionTd = document.createElement('td');
+                const actionDiv = document.createElement('div');
+                actionDiv.className = 'action-btns';
+
+                const emailBtn = document.createElement('button');
+                emailBtn.className = 'email-btn';
+                emailBtn.textContent = '📧 Email';
+                emailBtn.title = 'Email this specific record';
+                emailBtn.addEventListener('click', () => emailHistoryRecord(r.id));
+
+                const delBtn = document.createElement('button');
+                delBtn.className = 'del-btn';
+                delBtn.textContent = 'Delete';
+                delBtn.addEventListener('click', () => deleteRecord(r.id));
+
+                actionDiv.appendChild(emailBtn);
+                actionDiv.appendChild(delBtn);
+                actionTd.appendChild(actionDiv);
+                tr.appendChild(actionTd);
+
+                body.appendChild(tr);
+            });
+        }
+
+        async function loadHistory() {
+            const message = document.getElementById('message');
+            try {
+                const res = await fetch(API + '/history', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+
+                if (res.status === 401) {
+                    localStorage.removeItem('greenpick_token');
+                    localStorage.removeItem('greenpick_name');
+                    window.location.href = '/login?next=history.html';
+                    return;
+                }
+                if (!res.ok) throw new Error('Failed to load history');
+
+                const data = await res.json();
+                allRecords = data.history || [];
+                render();
+            } catch (err) {
+                message.className = 'msg error';
+                message.style.display = 'block';
+                message.textContent = 'Could not load history. Make sure the server is running.';
+            }
+        }
+
+        async function emailHistoryRecord(historyId) {
+            const emailInput = document.getElementById('userEmailInput');
+            const statusDiv = document.getElementById('emailStatus');
+            const targetEmail = emailInput.value.trim();
+
+            if (!targetEmail) {
+                statusDiv.className = 'email-status error';
+                statusDiv.style.display = 'block';
+                statusDiv.textContent = 'Please enter a valid email address in the box above.';
+                emailInput.focus();
+                return;
+            }
+
+            statusDiv.className = 'email-status';
+            statusDiv.style.display = 'block';
+            statusDiv.style.color = '#1b5e20';
+            statusDiv.textContent = 'Sending email...';
+
+            try {
+                const res = await fetch(API + '/history/email', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: targetEmail,
+                        history_id: historyId
+                    })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.detail || 'Failed to send email.');
+                }
+
+                statusDiv.className = 'email-status success';
+                statusDiv.textContent = data.message || `Successfully sent email to ${targetEmail}!`;
+            } catch (err) {
+                statusDiv.className = 'email-status error';
+                statusDiv.textContent = err.message || 'An error occurred while sending the email.';
+            }
+        }
+
+        async function deleteRecord(id) {
+            if (!confirm('Delete this history entry?')) return;
+            try {
+                const res = await fetch(API + '/history/' + id, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (!res.ok) throw new Error();
+                allRecords = allRecords.filter(r => r.id !== id);
+                render();
+            } catch (err) {
+                alert('Could not delete this entry.');
+            }
+        }
+
+        async function clearAllHistory() {
+            if (!confirm('Are you sure you want to clear your entire prediction history?')) return;
+            try {
+                const res = await fetch(API + '/history', {
+                    method: 'DELETE',
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (!res.ok) throw new Error();
+                allRecords = [];
+                render();
+            } catch (err) {
+                alert('Could not clear history.');
+            }
+        }
+
+        document.querySelectorAll('.filters button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                render();
+            });
+        });
+
+        loadHistory();
+    </script>
+</body>
+</html>

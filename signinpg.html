@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - GreenPick</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --forest: #14361f;
+            --moss: #2f6b3a;
+            --leaf: #4c9a4f;
+            --lime: #b7e36a;
+            --sage: #d0e7c0;
+            --mist: #e8f4dc;
+            --line: #b6d9a6;
+            --ink: #163d22;
+            --muted: #2a6238;
+            --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+            --font-body: 'Nunito Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-body); }
+
+        /* Light Green Background */
+        body {
+            background-color: var(--sage);
+            background-image:
+                radial-gradient(circle at 10% 6%, rgba(150, 214, 90, 0.45), transparent 40%),
+                radial-gradient(circle at 94% 60%, rgba(76, 154, 79, 0.28), transparent 45%);
+            background-attachment: fixed;
+            color: var(--ink);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Fresh Green Header with leaf pattern */
+        header {
+            background-color: #8fcd74;
+            background-image:
+                radial-gradient(circle at 6% 0%, rgba(255, 255, 255, 0.45), transparent 40%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%232f6b3a' stroke-opacity='0.16' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 44 C20 24 34 12 52 10 C54 28 44 42 20 44Z'/%3E%3Cpath d='M22 42 L46 18'/%3E%3Cpath d='M84 108 C84 88 98 76 116 74 C118 92 108 106 84 108Z'/%3E%3Cpath d='M86 106 L110 82'/%3E%3C/g%3E%3C/svg%3E"),
+                linear-gradient(90deg, #aadf8c 0%, #78c060 100%);
+            background-size: auto, 120px 120px, auto;
+            color: var(--forest);
+            padding: 20px 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 4px solid var(--moss);
+            box-shadow: 0 6px 18px rgba(20, 54, 31, 0.2);
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 28px; font-weight: 700; letter-spacing: 0.3px;
+            color: var(--forest);
+        }
+
+        nav a {
+            color: var(--forest); text-decoration: none; margin-left: 25px; font-weight: 600;
+            font-size: 16px; transition: color 0.3s ease; position: relative;
+        }
+        nav a:hover { color: var(--moss); }
+        nav a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0;
+            background-color: var(--moss); transition: width 0.3s ease;
+        }
+        nav a:hover::after { width: 100%; }
+
+        a:focus-visible {
+            outline: 3px solid var(--moss);
+            outline-offset: 4px;
+            border-radius: 6px;
+        }
+
+        .container { max-width: 480px; margin: 60px auto; padding: 0 20px; text-align: center; }
+
+        /* Card, same treatment as the about-section card on the homepage */
+        .auth-section {
+            background-color: #bfe0a8;
+            background-image:
+                radial-gradient(circle at 92% 6%, rgba(255, 255, 255, 0.6), transparent 36%),
+                radial-gradient(circle at 55% 105%, rgba(76, 154, 79, 0.22), transparent 46%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%232f6b3a' stroke-opacity='0.13' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 44 C20 24 34 12 52 10 C54 28 44 42 20 44Z'/%3E%3Cpath d='M22 42 L46 18'/%3E%3Cpath d='M84 108 C84 88 98 76 116 74 C118 92 108 106 84 108Z'/%3E%3Cpath d='M86 106 L110 82'/%3E%3C/g%3E%3C/svg%3E"),
+                linear-gradient(135deg, #cdeab8 0%, #a9d891 100%);
+            background-size: auto, auto, 120px 120px, auto;
+            border: 1px solid #93c67d;
+            padding: 48px 38px 42px;
+            border-radius: 28px;
+            box-shadow: 0 22px 50px rgba(20, 54, 31, 0.14);
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .auth-section h1 {
+            font-family: var(--font-display);
+            color: var(--forest);
+            font-size: 34px;
+            font-weight: 600;
+            line-height: 1.15;
+            text-align: center;
+        }
+
+        /* short green bar under the heading */
+        .auth-section h1::after {
+            content: '';
+            display: block;
+            width: 56px;
+            height: 3px;
+            margin: 16px auto 16px;
+            background: var(--leaf);
+            border-radius: 3px;
+        }
+
+        .auth-section .aim-subtitle {
+            font-family: var(--font-display);
+            color: var(--moss);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        form { display: flex; flex-direction: column; gap: 20px; }
+
+        .form-group label { display: block; color: var(--forest); font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+
+        .form-group input {
+            width: 100%; padding: 13px 16px; font-size: 15px; font-family: inherit; color: var(--ink);
+            background: rgba(255, 255, 255, 0.75); border: 1px solid #93c67d; border-radius: 12px; outline: none;
+            transition: all 0.3s ease;
+        }
+        .form-group input:focus {
+            border-color: var(--moss); background: #ffffff; box-shadow: 0 0 0 3px rgba(76, 154, 79, 0.28);
+        }
+        .form-group input::placeholder { color: #6f9578; }
+
+        button.auth-btn {
+            margin-top: 10px; padding: 14px; font-family: inherit; font-size: 16px; font-weight: 700;
+            color: #ffffff; background: linear-gradient(160deg, #3a7d45 0%, #1f5a2e 100%); border: none;
+            border-bottom: 5px solid var(--forest);
+            border-radius: 12px; cursor: pointer; box-shadow: 0 10px 20px rgba(20, 54, 31, 0.22);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        button.auth-btn:hover {
+            transform: translateY(-4px); box-shadow: 0 16px 28px rgba(20, 54, 31, 0.35);
+            background: linear-gradient(160deg, #47924f 0%, #2a6f3a 100%);
+        }
+        button.auth-btn:focus-visible {
+            outline: 3px solid var(--lime);
+            outline-offset: 3px;
+        }
+        button.auth-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .switch-note { margin-top: 25px; text-align: center; font-size: 14.5px; color: var(--muted); }
+        .switch-note a { color: var(--forest); font-weight: 700; text-decoration: none; }
+        .switch-note a:hover { text-decoration: underline; }
+
+        #formMsg {
+            margin-top: -6px; margin-bottom: 4px; font-size: 14px; font-weight: 600; text-align: center;
+            padding: 10px 14px; border-radius: 10px; display: none;
+        }
+        #formMsg.error { background: rgba(255, 255, 255, 0.8); border: 1px solid #e0b0a6; color: #8a2c1c; display: block; }
+        #formMsg.success { background: rgba(255, 255, 255, 0.8); border: 1px solid #93c67d; color: var(--forest); display: block; }
+
+        @media (max-width: 600px) {
+            header { padding: 15px 20px; }
+            .container { margin: 32px auto; }
+            .auth-section { padding: 38px 24px 34px; }
+            .auth-section h1 { font-size: 28px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; animation: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo"> GreenPick</div>
+        <nav>
+            <a href="homepg.html">Home</a>
+            <a href="homepg.html#about">About Us</a>
+            <a href="loginpg.html">Login</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="auth-section">
+            <h1>Create Account</h1>
+            <div class="aim-subtitle">Join GreenPick</div>
+
+            <div id="formMsg"></div>
+
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Your name" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="At least 6 characters" required minlength="6">
+                </div>
+
+                <button type="submit" class="auth-btn" id="submitBtn">Create Account</button>
+            </form>
+
+            <p class="switch-note">Already have an account? <a href="loginpg.html">Sign in</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Point this at wherever `uvicorn main:app` is running.
+        const API_BASE_URL = 'http://127.0.0.1:8000';
+
+        // Same keys the login, prediction and history pages use.
+        const TOKEN_KEY = 'greenpick_token';
+        const NAME_KEY = 'greenpick_name';
+
+        const form = document.getElementById('signupForm');
+        const msg = document.getElementById('formMsg');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const payload = {
+                name: document.getElementById('name').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                password: document.getElementById('password').value
+            };
+
+            msg.className = '';
+            msg.style.display = 'none';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating account...';
+
+            try {
+                // 1. Create the account
+                const response = await fetch(`${API_BASE_URL}/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json().catch(() => ({}));
+
+                if (!response.ok) {
+                    throw new Error(result.detail || `Request failed (${response.status})`);
+                }
+
+                // 2. /signup does not return a token, so log the user in with the
+                //    same email + password to get one.
+                let loggedIn = false;
+                try {
+                    const loginRes = await fetch(`${API_BASE_URL}/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: payload.email, password: payload.password })
+                    });
+                    const loginData = await loginRes.json().catch(() => ({}));
+
+                    if (loginRes.ok && loginData.token) {
+                        localStorage.setItem(TOKEN_KEY, loginData.token);
+                        localStorage.setItem(NAME_KEY, loginData.user.name);
+                        loggedIn = true;
+                    }
+                } catch (loginErr) {
+                    // Fall through: user can still sign in manually
+                }
+
+                msg.className = 'success';
+                msg.style.display = 'block';
+
+                if (loggedIn) {
+                    msg.textContent = 'Account created! Redirecting to your homepage...';
+                    setTimeout(() => { window.location.href = 'loginpg.html'; }, 1200);
+                } else {
+                    msg.textContent = 'Account created! Redirecting to login...';
+                    setTimeout(() => { window.location.href = 'loginpg.html'; }, 1200);
+                }
+
+            } catch (error) {
+                msg.className = 'error';
+                msg.style.display = 'block';
+                if (error instanceof TypeError) {
+                    msg.textContent = `Could not reach the backend at ${API_BASE_URL}. Make sure "uvicorn main:app --reload" is running.`;
+                } else {
+                    msg.textContent = error.message;
+                }
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Create Account';
+            }
+        });
+    </script>
+</body>
+</html>

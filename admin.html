@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenPick - Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --forest: #14361f;
+            --moss: #2f6b3a;
+            --leaf: #4c9a4f;
+            --lime: #b7e36a;
+            --sage: #d0e7c0;
+            --mist: #e8f4dc;
+            --line: #b6d9a6;
+            --ink: #163d22;
+            --danger: #9a2f2f;
+            --font-display: 'Fraunces', Georgia, serif;
+            --font-body: 'Nunito Sans', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-body);
+        }
+
+        body {
+            background-color: var(--sage);
+            background-image:
+                radial-gradient(circle at 10% 6%, rgba(150, 214, 90, 0.45), transparent 40%),
+                radial-gradient(circle at 94% 60%, rgba(76, 154, 79, 0.28), transparent 45%);
+            background-attachment: fixed;
+            color: var(--ink);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #8fcd74;
+            background-image: linear-gradient(90deg, #aadf8c 0%, #78c060 100%);
+            color: var(--forest);
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--moss);
+            box-shadow: 0 4px 14px rgba(20, 54, 31, 0.15);
+        }
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--forest);
+            text-decoration: none;
+        }
+
+        .admin-tag {
+            background-color: var(--forest);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 3px 10px;
+            border-radius: 12px;
+        }
+
+        .logout-btn {
+            background-color: transparent;
+            border: 2px solid var(--forest);
+            color: var(--forest);
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: var(--forest);
+            color: #ffffff;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            width: 92%;
+            margin: 40px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #cdeab8 0%, #a9d891 100%);
+            border: 1px solid #93c67d;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 10px 24px rgba(20, 54, 31, 0.08);
+        }
+
+        .stat-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--moss);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--forest);
+            margin-top: 8px;
+        }
+
+        .panel-card {
+            background-color: #bfe0a8;
+            background-image: linear-gradient(135deg, #cdeab8 0%, #a9d891 100%);
+            border: 1px solid #93c67d;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 14px 32px rgba(20, 54, 31, 0.1);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .panel-title {
+            font-family: var(--font-display);
+            font-size: 22px;
+            color: var(--forest);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid #c0e3ad;
+        }
+
+        th {
+            background-color: var(--moss);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background-color: #eaf6de;
+        }
+
+        .badge-status {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .badge-active {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .action-delete {
+            color: var(--danger);
+            background: none;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .action-delete:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 15px 20px; }
+            .dashboard-container { margin: 20px auto; }
+            table { display: block; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-box">
+            <a href="#" class="logo">GreenPick</a>
+            <span class="admin-tag">Admin Console</span>
+        </div>
+        <button class="logout-btn" onclick="logoutAdmin()">Sign Out</button>
+    </header>
+
+    <div class="dashboard-container">
+        
+        <!-- Summary Stats Section -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-title">Total Registered Users</div>
+                <div class="stat-value" id="statUsers">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Total Estimates Generated</div>
+                <div class="stat-value" id="statEstimates">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Most Popular Crop</div>
+                <div class="stat-value" id="statCrop" style="font-size: 26px;">--</div>
+            </div>
+        </div>
+
+        <!-- Registered Users Table -->
+        <div class="panel-card">
+            <div class="panel-header">
+                <h3 class="panel-title">User Accounts</h3>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username / Email</th>
+                        <th>Status</th>
+                        <th>Created Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    <tr><td colspan="5" style="text-align: center;">Loading user records...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Recent Calculation Activity -->
+        <div class="panel-card">
+            <div class="panel-header">
+                <h3 class="panel-title">Recent Profit Calculations</h3>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Crop</th>
+                        <th>Farm Size</th>
+                        <th>Estimated Revenue</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="logsTableBody">
+                    <tr><td colspan="5" style="text-align: center;">Loading activity logs...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        // Check if Admin JWT Token exists
+        const adminToken = localStorage.getItem('greenpick_admin_token');
+        if (!adminToken) {
+            alert('Unauthorized session. Redirecting to admin login.');
+            window.location.href = 'admin_login.html';
+        }
+
+        async function fetchDashboardData() {
+            try {
+                // Request metrics from backend admin routes
+                const response = await fetch('http://127.0.0.1:8000/admin/dashboard-stats', {
+                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                });
+
+                if (response.status === 401 || response.status === 403) {
+                    alert('Session expired or insufficient rights.');
+                    logoutAdmin();
+                    return;
+                }
+
+                const data = await response.json();
+
+                // Populate Stats
+                document.getElementById('statUsers').textContent = data.total_users || 0;
+                document.getElementById('statEstimates').textContent = data.total_estimates || 0;
+                document.getElementById('statCrop').textContent = data.top_crop || 'N/A';
+
+                // Populate Users Table
+                const userTbody = document.getElementById('userTableBody');
+                if (data.users && data.users.length > 0) {
+                    userTbody.innerHTML = data.users.map(u => `
+                        <tr>
+                            <td>${u.id}</td>
+                            <td>${u.username}</td>
+                            <td><span class="badge-status badge-active">Active</span></td>
+                            <td>${u.created_at || 'Recently'}</td>
+                            <td><button class="action-delete" onclick="deleteUser(${u.id})">Remove</button></td>
+                        </tr>
+                    `).join('');
+                } else {
+                    userTbody.innerHTML = `<tr><td colspan="5" style="text-align: center;">No user records found.</td></tr>`;
+                }
+
+                // Populate Logs Table
+                const logsTbody = document.getElementById('logsTableBody');
+                if (data.logs && data.logs.length > 0) {
+                    logsTbody.innerHTML = data.logs.map(log => `
+                        <tr>
+                            <td>#${log.user_id}</td>
+                            <td><strong>${log.crop}</strong></td>
+                            <td>${log.farm_size} Acres</td>
+                            <td>$${log.estimated_profit}</td>
+                            <td>${log.timestamp || 'Today'}</td>
+                        </tr>
+                    `).join('');
+                } else {
+                    logsTbody.innerHTML = `<tr><td colspan="5" style="text-align: center;">No activity logs recorded yet.</td></tr>`;
+                }
+
+            } catch (err) {
+                console.error('Failed to load dashboard statistics:', err);
+            }
+        }
+
+        async function deleteUser(userId) {
+            if (!confirm(`Are you sure you want to delete User #${userId}?`)) return;
+
+            try {
+                const res = await fetch(`http://127.0.0.1:8000/admin/users/${userId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${adminToken}` }
+                });
+
+                if (res.ok) {
+                    alert('User removed.');
+                    fetchDashboardData();
+                } else {
+                    alert('Could not remove user.');
+                }
+            } catch (e) {
+                alert('Connection error.');
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('greenpick_admin_token');
+            window.location.href = 'admin_login.html';
+        }
+
+        // Initialize dashboard on page load
+        window.onload = fetchDashboardData;
+    </script>
+</body>
+</html>
